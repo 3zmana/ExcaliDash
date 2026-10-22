@@ -1,5 +1,5 @@
 # Shared dependency stage
-FROM node:20-alpine AS dependencies
+FROM node:24-alpine AS dependencies
 
 WORKDIR /app
 
@@ -50,7 +50,7 @@ FROM dependencies AS production-dependencies
 RUN npm prune --omit=dev && npm cache clean --force
 
 # Production stage
-FROM node:20-alpine
+FROM node:24-alpine
 
 ARG APP_BUILD_LABEL
 ENV APP_BUILD_LABEL=${APP_BUILD_LABEL}
