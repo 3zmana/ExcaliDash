@@ -59,7 +59,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version: "20"
+          node-version: "24.22.1"
           cache: "npm"
           cache-dependency-path: |
             backend/package-lock.json
@@ -90,7 +90,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version: "20"
+          node-version: "24.22.1"
           cache: "npm"
           cache-dependency-path: |
             package-lock.json
@@ -132,7 +132,7 @@ jobs:
         if: needs.changes.outputs.application == 'true'
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version: "20"
+          node-version: "24.22.1"
           cache: npm
           cache-dependency-path: |
             backend/package-lock.json
@@ -379,7 +379,7 @@ jobs:
           gh release create "$tag" \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
-            --notes "move to new CI release pipeline" \
+            --generate-notes \
             --latest \
             --title "ExcaliDash ${VERSION}"
 
