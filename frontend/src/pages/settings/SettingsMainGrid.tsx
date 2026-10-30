@@ -19,7 +19,8 @@ import {
 } from "./SettingsRow";
 import { useLocale } from "../../context/useLocale";
 import {
-  isSupportedLocale,
+  localeForLanguageCode,
+  LOCALE_LANGUAGE_CODES,
   LOCALE_LABELS,
   SUPPORTED_LOCALES,
 } from "../../i18n";
@@ -69,6 +70,7 @@ export const SettingsMainGrid = ({
   onCheckForUpdates,
 }: SettingsMainGridProps) => {
   const { language, setLanguage, t } = useLocale();
+  const selectedLocale = localeForLanguageCode(language);
 
   return (
     <SettingsCard>
@@ -79,16 +81,18 @@ export const SettingsMainGrid = ({
       >
         <select
           aria-label={t("settings.language")}
-          value={language}
+          value={
+            selectedLocale ? LOCALE_LANGUAGE_CODES[selectedLocale] : language
+          }
           onChange={(event) => setLanguage(event.target.value)}
           className="ui-input text-sm font-bold"
         >
           {SUPPORTED_LOCALES.map((locale) => (
-            <option key={locale} value={locale}>
+            <option key={locale} value={LOCALE_LANGUAGE_CODES[locale]}>
               {LOCALE_LABELS[locale]}
             </option>
           ))}
-          {!isSupportedLocale(language) && (
+          {!selectedLocale && (
             <option value={language}>
               {t("settings.editorLanguage", { language })}
             </option>
@@ -176,7 +180,7 @@ export const SettingsMainGrid = ({
               }}
               className="ui-input w-24 text-sm tabular-nums disabled:opacity-50"
             />
-            <span>MB</span>
+            <span>{t("settings.megabytes")}</span>
           </label>
           <PlayfulSwitch
             checked={imageCompression}

@@ -1,10 +1,12 @@
 import { en, type LocaleMessages, type TranslationKey } from "./locales/en";
+import { fr } from "./locales/fr";
 import { zhCN } from "./locales/zh-CN";
 
 export type { TranslationKey };
 
 const messages = {
   en,
+  fr,
   "zh-CN": zhCN,
 } satisfies Record<string, LocaleMessages>;
 
@@ -17,11 +19,23 @@ export const SUPPORTED_LOCALES = Object.keys(messages) as Locale[];
 // Each language is labelled in its own script so users can always find it.
 export const LOCALE_LABELS: Record<Locale, string> = {
   en: "English",
+  fr: "Français",
   "zh-CN": "简体中文",
 };
 
-export const isSupportedLocale = (value: string): value is Locale =>
-  (SUPPORTED_LOCALES as string[]).includes(value);
+// Code stored in the "language" preference, which the Excalidraw editor also
+// reads. Excalidraw only knows some languages by a region code ("fr-FR").
+export const LOCALE_LANGUAGE_CODES: Record<Locale, string> = {
+  en: "en",
+  fr: "fr-FR",
+  "zh-CN": "zh-CN",
+};
+
+// The locale whose stored code is `value`, if any ("fr-FR" or "fr" -> "fr").
+export const localeForLanguageCode = (value: string): Locale | undefined =>
+  SUPPORTED_LOCALES.find(
+    (locale) => locale === value || LOCALE_LANGUAGE_CODES[locale] === value,
+  );
 
 const languagePrefix = (value: string) => value.toLowerCase().split("-")[0];
 

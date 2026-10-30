@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { resolveLocale, translate } from "../src/i18n";
+import {
+  LOCALE_LANGUAGE_CODES,
+  localeForLanguageCode,
+  resolveLocale,
+  translate,
+} from "../src/i18n";
 import { en } from "../src/i18n/locales/en";
 import { zhCN } from "../src/i18n/locales/zh-CN";
 
@@ -26,7 +31,23 @@ describe("i18n", () => {
     expect(resolveLocale("zh-CN")).toBe("zh-CN");
     expect(resolveLocale("zh-TW")).toBe("zh-CN");
     expect(resolveLocale("en-GB")).toBe("en");
-    expect(resolveLocale("fr-FR")).toBe("en");
+    expect(resolveLocale("fr-FR")).toBe("fr");
+    expect(resolveLocale("fr-CA")).toBe("fr");
+    expect(resolveLocale("de-DE")).toBe("en");
     expect(resolveLocale(null)).toBe("en");
+  });
+
+  it("maps locales to the language codes the editor understands", () => {
+    expect(LOCALE_LANGUAGE_CODES.fr).toBe("fr-FR");
+    expect(localeForLanguageCode("fr-FR")).toBe("fr");
+    expect(localeForLanguageCode("fr")).toBe("fr");
+    expect(localeForLanguageCode("de-DE")).toBeUndefined();
+  });
+
+  it("translates into French with French typography", () => {
+    expect(translate("fr", "sidebar.trash")).toBe("Corbeille");
+    expect(translate("fr", "auth.login.forgotPassword")).toBe(
+      "Mot de passe oublié\u202F?",
+    );
   });
 });
